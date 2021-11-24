@@ -36,4 +36,9 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return getName();
     }
+
+	private String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

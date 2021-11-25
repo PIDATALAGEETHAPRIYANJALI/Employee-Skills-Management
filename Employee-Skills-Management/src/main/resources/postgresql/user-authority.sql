@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS public.user_authority
     user_id integer NOT NULL,
     authority_id integer NOT NULL,
     CONSTRAINT user_authority_user_fkey FOREIGN KEY (user_id)
-        REFERENCES public."user" (id) MATCH SIMPLE
+        REFERENCES public."user_info" (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
     CONSTRAINT user_authority_authority_fkey FOREIGN KEY (authority_id)

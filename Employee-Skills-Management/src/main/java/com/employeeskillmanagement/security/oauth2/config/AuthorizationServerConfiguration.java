@@ -1,4 +1,4 @@
-package security.oauth2.config;
+package com.employeeskillmanagement.security.oauth2.config;
 
 import javax.sql.DataSource;
 

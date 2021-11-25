@@ -1,4 +1,5 @@
-package model;
+package com.employeeskillmanagement.model;
+
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,7 +18,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -82,7 +82,7 @@ public class User implements UserDetails, Serializable {
 	}
 
 	@Override
-	public boolean isCredentialsNonExpired() {
+	public boolean isCredentialsNonExpired() { 
 		return true;
 	}
 
@@ -91,27 +91,12 @@ public class User implements UserDetails, Serializable {
 		return true;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 	
 
 
 }
+
+
+

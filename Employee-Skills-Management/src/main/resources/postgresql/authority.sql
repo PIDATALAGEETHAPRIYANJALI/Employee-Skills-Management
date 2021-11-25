@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS public.authority
 (
     id integer NOT NULL,

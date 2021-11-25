@@ -1,4 +1,4 @@
-package model;
+package com.employeeskillmanagement.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,9 +36,4 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return getName();
     }
-
-	private String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

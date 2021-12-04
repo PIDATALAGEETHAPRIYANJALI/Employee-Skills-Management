@@ -1,5 +1,4 @@
-package com.employeeskillmanagement.model;
-
+package com.employeeskillmanagement.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -34,16 +33,14 @@ import lombok.Setter;
 @Setter
 public class User implements UserDetails, Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 3903243335716548729L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
 	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
 	@Column(name = "id")
-	private Integer id;
+	private Long id;
 	
 	@Column(name="user_name")
 	private String username;
@@ -57,8 +54,9 @@ public class User implements UserDetails, Serializable {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="aadhar_number")
-	private String aadharNumber;
+	@Column(name="org_id")
+	private Integer org_id;
+	
 	
 	
 
@@ -82,7 +80,7 @@ public class User implements UserDetails, Serializable {
 	}
 
 	@Override
-	public boolean isCredentialsNonExpired() { 
+	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
@@ -91,12 +89,4 @@ public class User implements UserDetails, Serializable {
 		return true;
 	}
 
-
-
-	
-
-
 }
-
-
-

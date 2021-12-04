@@ -1,4 +1,4 @@
-package com.employeeskillmanagement.model;
+package com.employeeskillmanagement.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,9 +19,6 @@ import lombok.Setter;
 @Setter
 public class Authority implements GrantedAuthority {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6534950615400310162L;
 
 	@Id

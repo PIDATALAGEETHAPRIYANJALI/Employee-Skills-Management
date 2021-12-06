@@ -1,5 +1,7 @@
 package com.employeeskillmanagement.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,4 +35,6 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return getName();
     }
+   
+    
 }

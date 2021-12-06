@@ -16,6 +16,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -33,14 +35,16 @@ import lombok.Setter;
 @Setter
 public class User implements UserDetails, Serializable {
 
-
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 3903243335716548729L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
 	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
 	@Column(name = "id")
-	private Long id;
+	private Integer id;
 	
 	@Column(name="user_name")
 	private String username;
@@ -54,9 +58,10 @@ public class User implements UserDetails, Serializable {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="org_id")
-	private Integer org_id;
-	
+	@Pattern(regexp ="^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$",message="mail id is not valid")
+	@NotEmpty
+	@Column(name="email",unique = true)
+	private String email;
 	
 	
 
@@ -88,5 +93,10 @@ public class User implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return true;
 	}
+
+
+
+	
+
 
 }

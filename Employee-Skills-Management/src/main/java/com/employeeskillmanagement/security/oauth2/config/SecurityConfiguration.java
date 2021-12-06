@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -27,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(userPasswordEncoder);
@@ -45,19 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-        .csrf().disable()
-        .anonymous().disable()
-        .authorizeRequests()
-        .antMatchers("/api-docs/**").permitAll();
-    
-//        http.csrf().disable().authorizeRequests().antMatchers("/oauth/token").permitAll()
-//        .antMatchers(urlPatternProperties.getSuperadmin()).hasAuthority(roleProperties.getSuperadmin())
-//        .antMatchers(urlPatternProperties.getAdmin()).hasAnyAuthority(roleProperties.getAdmin())
-//        .antMatchers(urlPatternProperties.getUser()).hasAnyAuthority(roleProperties.getUser()).anyRequest()
-//        .authenticated().and().formLogin().disable();
-
-            
-
+     
+    	http.csrf().disable().authorizeRequests().antMatchers("/api/get").permitAll()
+    	.antMatchers("/user").hasAnyAuthority("ROLE_MOBILE_SUPER_ADMIN").anyRequest()
+    	.authenticated().and().formLogin().disable();
 }
 }

@@ -29,7 +29,6 @@ import com.employeeskillmanagement.service.UserDetailsServiceImpl;
 
 
 @RestController
-@RequestMapping("/api")
 public class UserController {
 
 	@Autowired
@@ -39,20 +38,12 @@ public class UserController {
 			this.detailsServiceImpl = detailsServiceImpl;
 		} 
 		
-	@GetMapping(value="/get")
+	@GetMapping("/users")
     public List<User> getAll() {
         return detailsServiceImpl.getAll();
     }
 	
-	/*@RequestMapping(value="/user",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<?> create(@RequestBody UserDto user) throws Exception {
-        detailsServiceImpl.create(user);
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
-    }*/
-	
-	@PostMapping(value = "/saveUser")
+	@PostMapping("/saveUser")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<User> create(@Valid @RequestBody UserDTO user) throws Exception {
 		
@@ -62,13 +53,13 @@ public class UserController {
     }
 	
 	
-	@DeleteMapping("/user/{id}")
+	@DeleteMapping("/deleteUser/{id}")
 	public HttpStatus deleteById(@PathVariable int id){
 		this.detailsServiceImpl.deleteById(id);
 		return HttpStatus.OK;
 	}
 	
-	@PutMapping(value="/user/{id}")
+	@PutMapping("/updateUser/{id}")
 	public ResponseEntity<User> update(@RequestBody User users,@PathVariable Integer id) {
 		users.setId(id);
 		//return detailsServiceImpl.update(users);

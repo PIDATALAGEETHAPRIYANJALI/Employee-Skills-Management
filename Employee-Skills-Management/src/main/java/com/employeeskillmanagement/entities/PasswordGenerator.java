@@ -7,11 +7,24 @@ import org.springframework.stereotype.Component;
 @Component("RandomPassword")
 public class PasswordGenerator {
 		public String generateRandomPassword(int len) {
-			String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&";
-			Random rnd = new Random();
-			StringBuilder sb = new StringBuilder(len);
-			for (int i = 0; i < len; i++)
-				sb.append(chars.charAt(rnd.nextInt(chars.length())));
-			return sb.toString();
+			
+			String symbol = "-/.^&*_!@%=+>)"; 
+	        String cap_letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+	        String small_letter = "abcdefghijklmnopqrstuvwxyz"; 
+	        String numbers = "0123456789"; 
+
+	        String finalString = cap_letter + small_letter +  numbers + symbol; 
+
+	        Random random = new Random(); 
+
+	        StringBuilder password = new StringBuilder(len); 
+
+	        for (int i = 0; i < len; i++) 
+	        { 
+	            password.append(finalString.charAt(random.nextInt(finalString.length()))); 
+
+	        } 
+	        return password.toString();
+			
 }
 }

@@ -35,9 +35,6 @@ import lombok.Setter;
 @Setter
 public class User implements UserDetails, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3903243335716548729L;
 	
 	@Id
@@ -61,8 +58,7 @@ public class User implements UserDetails, Serializable {
 	@Pattern(regexp ="^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$",message="mail id is not valid")
 	@NotEmpty
 	@Column(name="email",unique = true)
-	private String email;
-	
+	private String email;	
 	
 
 	@ManyToMany(fetch = FetchType.LAZY)

@@ -75,12 +75,12 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
           user.setAuthorities(addAuthorities); 
          
           
-	Mail mail = new Mail();
-	 mail.setSubject("Welcome to Employee Skill Management Project");
-  mail.setToEmail(user.getEmail());
-  mail.setContent(" User name:"+user.getUsername() +"\n"+ "password :"+pass);
-  emailservice.sendEmail(mail);
- return 	userRepository.save(user);
+          Mail mail = new Mail();
+          mail.setSubject("Welcome to Employee Skill Management Project");
+          mail.setToEmail(user.getEmail());
+          mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+pass);
+          emailservice.sendEmail(mail);
+          return userRepository.save(user);
  
 	}
 	

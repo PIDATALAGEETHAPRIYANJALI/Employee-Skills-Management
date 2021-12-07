@@ -15,6 +15,8 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
+    
+    
     private List<String> role;
 	@Override
 	public String toString() {

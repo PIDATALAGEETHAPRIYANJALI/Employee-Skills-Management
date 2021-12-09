@@ -2,7 +2,7 @@ package com.employeeskillmanagement.service;
 
 import java.util.List;
 
-import com.employeeskillmanagement.UserDTO;
+import com.employeeskillmanagement.dto.UserDTO;
 import com.employeeskillmanagement.entities.User;
 
 

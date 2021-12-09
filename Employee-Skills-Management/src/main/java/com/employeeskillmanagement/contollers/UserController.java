@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.employeeskillmanagement.UserDTO;
+import com.employeeskillmanagement.dto.UserDTO;
 import com.employeeskillmanagement.entities.User;
 import com.employeeskillmanagement.service.UserDetailsServiceImpl;
 

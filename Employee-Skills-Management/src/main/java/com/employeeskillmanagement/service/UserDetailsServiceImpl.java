@@ -1,5 +1,6 @@
 package com.employeeskillmanagement.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import com.employeeskillmanagement.UserDTO;
+import com.employeeskillmanagement.dto.UserDTO;
 import com.employeeskillmanagement.entities.Authority;
 import com.employeeskillmanagement.entities.Mail;
 import com.employeeskillmanagement.entities.PasswordGenerator;
 import com.employeeskillmanagement.entities.User;
+import com.employeeskillmanagement.exception.CustomException;
 import com.employeeskillmanagement.repository.AuthorityRepository;
 import com.employeeskillmanagement.repository.UserRepository;
 
@@ -59,28 +61,46 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	@Transactional
 	public User saveUser(UserDTO userdto) throws Exception {
 		
+		User user1;
+		
 		User user=new User();
 		user.setFirstName(userdto.getFirstName());
-	      user.setLastName(userdto.getLastName());
-	      user.setEmail(userdto.getEmail());
-	      user.setUsername(userdto.getUsername());
-	      PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
-	      String pass= passwordGenerator.generateRandomPassword(8);
-	      String encodedPassword = passwordEncoder.encode(pass);
-	      System.out.println(pass);
+	    user.setLastName(userdto.getLastName());
+	    user.setEmail(userdto.getEmail());
+	    user.setUsername(userdto.getUsername());
+	    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
+	    String pass= passwordGenerator.generateRandomPassword(8);
+	    String encodedPassword = passwordEncoder.encode(pass);
+	    System.out.println(pass);
 	      
-	      user.setPassword(encodedPassword);
+	    user.setPassword(encodedPassword);
 	     
-	      List<Authority> addAuthorities=authorityRepository.find(userdto.getRole());
-          user.setAuthorities(addAuthorities); 
-         
+	    List<Authority> listAll = authorityRepository.findAll();
+	    String superAdmin = listAll.get(0).getName();
+	      
+	    List<String> superAdminList = new ArrayList<>();
+	    superAdminList.add(superAdmin);
+	      
+	      
+	    List<Authority> addAuthorities=authorityRepository.find(userdto.getRole());
+	      
+	    if(superAdminList.equals(userdto.getRole())) {
+	    	
+	    	throw new CustomException("This role cannot be added again (Because we should have only one super admin)");
+	    }
+	    else {
+	    	user.setAuthorities(addAuthorities); 
+	    	user1 = userRepository.save(user);
+	    	  
+	    }
+	     
+        Mail mail = new Mail();
+        mail.setSubject("Welcome to Employee Skill Management Project");
+        mail.setToEmail(user.getEmail());
+        mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+pass);
+        emailservice.sendEmail(mail);
           
-          Mail mail = new Mail();
-          mail.setSubject("Welcome to Employee Skill Management Project");
-          mail.setToEmail(user.getEmail());
-          mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+pass);
-          emailservice.sendEmail(mail);
-          return userRepository.save(user);
+		return user1;
  
 	}
 	
@@ -88,17 +108,19 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	public User update(User userdto) {
 		return userRepository.save(userdto);
 	}
+	
 	@Override
 	@Transactional
 	public void deleteById(int id) {
-Optional<User> userdb=this.userRepository.findById(id);
+		
+		Optional<User> userdb = this.userRepository.findById(id);
 		
 		if(userdb.isPresent()) {
 			
 			this.userRepository.deleteById(id);
 		}
 		else {
-			throw new RuntimeException("Record not found with id  :" +id);
+			throw new CustomException("Record not found with id  :" +id);
 		}
 	 
 	}

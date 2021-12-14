@@ -1,16 +1,24 @@
 package com.employeeskillmanagement.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.employeeskillmanagement.dto.OrganizationDTO;
+import com.employeeskillmanagement.dto.UserDTO;
+import com.employeeskillmanagement.entities.Authority;
+import com.employeeskillmanagement.entities.Mail;
 import com.employeeskillmanagement.entities.Organization;
+import com.employeeskillmanagement.entities.PasswordGenerator;
 import com.employeeskillmanagement.entities.User;
 import com.employeeskillmanagement.exception.CustomException;
+import com.employeeskillmanagement.repository.AuthorityRepository;
 import com.employeeskillmanagement.repository.OrganizationRepository;
 import com.employeeskillmanagement.repository.UserRepository;
 
@@ -23,9 +31,20 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PasswordGenerator passwordGenerator;
+	
+	@Autowired
+	private AuthorityRepository authorityRepository;
+	
+	@Autowired
+	private EmailService emailService;
+		
+
 	@Override
 	@Transactional
-	public Organization createOrganization(OrganizationDTO organizationDto) {
+	public Organization createOrganization(OrganizationDTO organizationDto) throws Exception{
+		
 		Organization organization = new Organization();
 		organization.setOrganizationName(organizationDto.getOrganizationName());
 		organization.setCity(organizationDto.getCity());
@@ -34,14 +53,49 @@ public class OrganizationServiceImpl implements OrganizationService {
 		organization.setZip(organizationDto.getZip());
 		organization.setPhone(organizationDto.getPhone());
 		organization.setEmail(organizationDto.getEmail());
-		organization.setUser_id_created_by(organizationDto.getUser_id_created_by());
 		
-		User user = this.organizationRepository.findByOrganizationName(organizationDto.getOrganizationName());
+		UserDTO userDto = organizationDto.getUserDto();
+		User user=new User();
+				
+		user.setUsername(userDto.getUsername());
+	    user.setFirstName(userDto.getFirstName());
+	    user.setLastName(userDto.getLastName());
+	    user.setEmail(userDto.getEmail());
+	    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
+		String pass= passwordGenerator.generateRandomPassword(8);
+		String encodedPassword = passwordEncoder.encode(pass);
+		System.out.println(pass);
+		      
+		user.setPassword(encodedPassword);
+				
+		User user2 = null;
+	    List<Authority> listAll = authorityRepository.findAll();
+		String superAdmin=listAll.get(0).getName();
+		List<String> superList=new ArrayList<>();
+		superList.add(superAdmin);
+		     
+		List<Authority> addAuthorities=authorityRepository.find(userDto.getRole());
+		    
+		if(superList.equals(userDto.getRole()))
+		{
+		   	throw new CustomException("this role was not added ");
+		}
+		else
+		{
+		   user.setAuthorities(addAuthorities);
+		   user2= userRepository.save(user);
+		}
+		  
+		Mail mail = new Mail();
+        mail.setSubject("Welcome to Employee Skill Management Project");
+        mail.setToEmail(user.getEmail());
+        mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+pass);
+        emailService.sendEmail(mail);
 		
-		organization.setUser(user);
-		
-		return this.organizationRepository.save(organization);
-		
+		organization.setUser(user2);
+		  
+		return organizationRepository.save(organization);
+
 	}
 	
 	@Override
@@ -50,6 +104,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		
 		return this.organizationRepository.findAll();
 	}
+	
 	
 	@Override
 	@Transactional
@@ -67,13 +122,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Override
 	@Transactional
 	public Organization updateOrganization(OrganizationDTO organizationDto) {
-	Optional<Organization> organizationdb=this.organizationRepository.findById(organizationDto.getId());
 		
-		if(organizationdb.isPresent()) {
-			Organization organizationUpdate = organizationdb.get();
-			System.out.println(organizationUpdate + "organization");
+		Optional<Organization> organization = this.organizationRepository.findById(organizationDto.getId());
+		
+		if(organization.isPresent()) {
 			
-			organizationUpdate.setOrganizationName(organizationDto.getOrganizationName());
+			Organization organizationUpdate = organization.get();
 			organizationUpdate.setOrganizationName(organizationDto.getOrganizationName());
 			organizationUpdate.setCity(organizationDto.getCity());
 			organizationUpdate.setState(organizationDto.getState());
@@ -81,11 +135,21 @@ public class OrganizationServiceImpl implements OrganizationService {
 			organizationUpdate.setZip(organizationDto.getZip());
 			organizationUpdate.setPhone(organizationDto.getPhone());
 			organizationUpdate.setEmail(organizationDto.getEmail());
-			organizationUpdate.setUser_id_created_by(organizationDto.getUser_id_created_by());
+			
+			
+			User userUpdate = new User();
+					
+			userUpdate.setUsername(organization.get().getUser().getUsername());
+		    userUpdate.setFirstName(organization.get().getUser().getFirstName());
+		    userUpdate.setLastName(organization.get().getUser().getLastName());
+		    userUpdate.setEmail(organization.get().getUser().getEmail());
+		    userUpdate.setPassword(organization.get().getUser().getPassword());
+		    
+		    userRepository.save(userUpdate);
 			
 			this.organizationRepository.save(organizationUpdate);
 			return organizationUpdate;
-		
+					
 		}
 		else {
 			throw new CustomException("Record not found with id" + organizationDto.getId());

@@ -10,10 +10,12 @@ public interface UserService {
 
 	public List<User> getAll();
 	
-	   public User saveUser(UserDTO userdto)throws Exception;
+	public User create(UserDTO userDto)throws Exception;
+	
+	public User saveUser(UserDTO userDto)throws Exception;
 		
-		public User update(User user);
+	public User update(User user);
 		
-		 public void deleteById(int id);
+	public void deleteById(int id);
 	
 }

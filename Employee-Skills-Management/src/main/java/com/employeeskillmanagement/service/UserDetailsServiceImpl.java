@@ -57,6 +57,54 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	 public List<User> getAll() {
 		 return userRepository.findAll();
 	 }
+	
+	
+	@Override
+	@Transactional
+	public User create(UserDTO userDto) throws Exception {
+		
+		User user=new User();
+		
+		user.setFirstName(userDto.getFirstName());
+	    user.setLastName(userDto.getLastName());
+	    user.setEmail(userDto.getEmail());
+	    user.setUsername(userDto.getUsername());
+	    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
+	    String pass= passwordGenerator.generateRandomPassword(8);
+	    String encodedPassword = passwordEncoder.encode(pass);	
+	    System.out.println(pass);
+	    user.setPassword(encodedPassword);
+	     
+	    User user2 = null;
+	    
+	    List<Authority> listAll = authorityRepository.findAll();
+		String superAdmin = listAll.get(0).getName();
+		List<String> superList = new ArrayList<>();
+		superList.add(superAdmin);
+		     
+		List<Authority> addAuthorities = authorityRepository.find(userDto.getRole());
+		    
+		if(superList.equals(userDto.getRole()))
+		{
+		   	throw new CustomException("this role was not added ");
+		}
+		else
+		{
+		   user.setAuthorities(addAuthorities);
+		   user2 = userRepository.save(user);
+		}
+	          
+          
+		Mail mail = new Mail();
+        mail.setSubject("Welcome to Employee Skill Management Project");
+        mail.setToEmail(user.getEmail());
+        mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+pass);
+        emailservice.sendEmail(mail);
+        return user2;
+ 
+	}
+	
+	
 	@Override
 	@Transactional
 	public User saveUser(UserDTO userdto) throws Exception {
@@ -106,7 +154,22 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	
 	@Transactional
 	public User update(User userdto) {
-		return userRepository.save(userdto);
+		Optional<User> userdb=this.userRepository.findById((int) userdto.getId());
+		
+		if(userdb.isPresent()) {
+			User userUpdate=userdb.get();
+			userUpdate.setId(userdto.getId());
+			userUpdate.setUsername(userdto.getUsername());
+			userUpdate.setFirstName(userdto.getFirstName());
+			userUpdate.setLastName(userdto.getLastName());
+			userUpdate.setEmail(userdto.getEmail());
+		    userUpdate.setPassword(userdto.getPassword());
+		    userRepository.save(userUpdate);
+		    return userUpdate;
+		}
+		else {
+			throw new CustomException("Record not found with id" + userdto.getId());
+		}
 	}
 	
 	@Override

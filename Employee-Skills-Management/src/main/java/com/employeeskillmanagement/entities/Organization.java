@@ -1,5 +1,8 @@
 package com.employeeskillmanagement.entities;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +37,9 @@ public class Organization {
 	private long id;
 	
 	@Column(name = "org_name", nullable = false)
-	private String organizationName;
+//	private List<Organization> organizationName;
+	
+	private String OrganizationName;
 	
 	@Column(name = "city")
 	private String city;
@@ -54,15 +59,11 @@ public class Organization {
 	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(name = "superAdmin_id", nullable = false)
-	private long user_id_created_by;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn
 	@JsonIgnore
 	private User user;
-	
-	
+
 	
 	
 }

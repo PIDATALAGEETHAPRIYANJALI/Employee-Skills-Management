@@ -29,7 +29,7 @@ public class OrganizationController {
 	@Autowired
 	private OrganizationService organizationService;
 	
-	@GetMapping()
+	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<Organization> getAllOrganizations(){
 		return this.organizationService.getAllOrganizations();
@@ -42,7 +42,7 @@ public class OrganizationController {
 	
 	@PostMapping(value = "/saveOrganization")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Organization> create(@Valid @RequestBody OrganizationDTO organizationDto) {
+	public ResponseEntity<Organization> create(@Valid @RequestBody OrganizationDTO organizationDto) throws Exception {
 		
 		Organization organization = this.organizationService.createOrganization(organizationDto);
 		return new ResponseEntity<>(organization, HttpStatus.CREATED);

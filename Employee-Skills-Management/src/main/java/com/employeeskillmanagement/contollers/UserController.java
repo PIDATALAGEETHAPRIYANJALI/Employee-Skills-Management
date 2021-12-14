@@ -66,4 +66,6 @@ public class UserController {
 		return ResponseEntity.ok().body(detailsServiceImpl.update(users));
 		
 		}
+	
+	
 }

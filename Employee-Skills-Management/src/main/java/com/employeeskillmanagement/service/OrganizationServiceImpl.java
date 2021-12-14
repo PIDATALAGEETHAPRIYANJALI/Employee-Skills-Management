@@ -125,6 +125,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		
 		Optional<Organization> organization = this.organizationRepository.findById(organizationDto.getId());
 		
+		
 		if(organization.isPresent()) {
 			
 			Organization organizationUpdate = organization.get();
@@ -136,7 +137,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 			organizationUpdate.setPhone(organizationDto.getPhone());
 			organizationUpdate.setEmail(organizationDto.getEmail());
 			
-			
 			User userUpdate = new User();
 					
 			userUpdate.setUsername(organization.get().getUser().getUsername());
@@ -145,7 +145,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 		    userUpdate.setEmail(organization.get().getUser().getEmail());
 		    userUpdate.setPassword(organization.get().getUser().getPassword());
 		    
+		    System.out.println("userUpdate : " + userUpdate);
+		    
 		    userRepository.save(userUpdate);
+		    
+		    organizationUpdate.setUser(userUpdate);
 			
 			this.organizationRepository.save(organizationUpdate);
 			return organizationUpdate;

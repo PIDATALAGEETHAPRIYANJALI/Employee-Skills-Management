@@ -154,7 +154,7 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	
 	@Transactional
 	public User update(User userdto) {
-		Optional<User> userdb=this.userRepository.findById((int) userdto.getId());
+		Optional<User> userdb = this.userRepository.findById((int) userdto.getId());
 		
 		if(userdb.isPresent()) {
 			User userUpdate=userdb.get();
@@ -187,6 +187,7 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 		}
 	 
 	}
+
 
 	
 	

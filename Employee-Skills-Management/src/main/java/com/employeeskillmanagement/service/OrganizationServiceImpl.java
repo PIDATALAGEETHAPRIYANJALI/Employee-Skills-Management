@@ -64,8 +64,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 	    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
 		String pass= passwordGenerator.generateRandomPassword(8);
 		String encodedPassword = passwordEncoder.encode(pass);
-		System.out.println(pass);
 		      
+	
 		user.setPassword(encodedPassword);
 				
 		User user2 = null;
@@ -115,7 +115,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 		
 		else {
-			throw  new CustomException("Record not found with id  :" +id);
+			throw  new CustomException("Record not found with this id  :" +id);
 		}
 	}
 
@@ -137,15 +137,37 @@ public class OrganizationServiceImpl implements OrganizationService {
 			organizationUpdate.setPhone(organizationDto.getPhone());
 			organizationUpdate.setEmail(organizationDto.getEmail());
 			
+			UserDTO user = organizationDto.getUserDto();
+			
 			User userUpdate = new User();
 					
+			userUpdate.setId(organization.get().getUser().getId());
 			userUpdate.setUsername(organization.get().getUser().getUsername());
-		    userUpdate.setFirstName(organization.get().getUser().getFirstName());
-		    userUpdate.setLastName(organization.get().getUser().getLastName());
+		    userUpdate.setFirstName(user.getFirstName());
+		    userUpdate.setLastName(user.getLastName());
 		    userUpdate.setEmail(organization.get().getUser().getEmail());
 		    userUpdate.setPassword(organization.get().getUser().getPassword());
 		    
-		    System.out.println("userUpdate : " + userUpdate);
+		    
+		    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); 
+			String pass= passwordGenerator.generateRandomPassword(8);
+			String encodedPassword = passwordEncoder.encode(pass);
+			System.out.println(pass);
+			user.setPassword(encodedPassword);
+		    
+		    
+		    Mail mail = new Mail();
+	        mail.setSubject("Welcome to Employee Skill Management Project");
+	        mail.setToEmail(organization.get().getUser().getEmail());
+	        mail.setContent("Your credentials are :"+"\n"+"username : "+user.getUsername() +"\n"+ "password :"+ pass);
+	        try {
+				emailService.sendEmail(mail);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		    
+		    
+		    userUpdate.setAuthorities(organization.get().getUser().getAuthorities()); // It will take role from db that means we cannot change the role of user.
 		    
 		    userRepository.save(userUpdate);
 		    

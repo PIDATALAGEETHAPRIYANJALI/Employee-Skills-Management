@@ -38,7 +38,7 @@ public class Skills {
 	@Column(name = "id")
 	private Integer skill_id;
 	
-	@Column(name = "skill_name")
+	@Column(name = "skill_name", nullable = false)
 	private String skill_name;
 	
 	@Column(name = "description")
@@ -46,11 +46,17 @@ public class Skills {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_skills", 
-		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
-		inverseJoinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"))
+		joinColumns = @JoinColumn(name = "skill_id", referencedColumnName = "id"), 
+		inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	@OrderBy
 	@JsonIgnore
-	private Collection<User> users;
+	private List<User> user;
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "skill_user_id")
+//	@OrderBy
+//	@JsonIgnore
+//	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn

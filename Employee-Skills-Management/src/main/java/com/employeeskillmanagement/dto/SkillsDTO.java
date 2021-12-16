@@ -11,18 +11,23 @@ import javax.persistence.OrderBy;
 import com.employeeskillmanagement.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class SkillsDTO {
 	
-	private long skill_id;
+	private Integer skill_id;
 	private String skill_name;
 	private String description;
 	
 	private UserDTO userDto;
+	
+//	private String organizationName;
 	
 	public SkillsDTO() {
 		
@@ -35,10 +40,6 @@ public class SkillsDTO {
 				" description = " + description + " userDto = " + userDto +"]";
 		
 	}
-	
-	
-	
-	
 	
 
 }

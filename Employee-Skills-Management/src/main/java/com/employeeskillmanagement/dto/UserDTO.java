@@ -10,6 +10,8 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
+    private List<String> role;
+    
     
     public long getId() {
 		return id;
@@ -56,7 +58,9 @@ public class UserDTO {
 	
     
     
-    private List<String> role;
+    
+    
+    
 	@Override
 	public String toString() {
 		return "UserDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username

@@ -1,7 +1,5 @@
 package com.employeeskillmanagement.entities;
 
-import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -36,9 +33,7 @@ public class Organization {
 	@Column(name = "id")
 	private long id;
 	
-	@Column(name = "org_name", nullable = false)
-//	private List<Organization> organizationName;
-	
+	@Column(name = "org_name", nullable = false)	
 	private String OrganizationName;
 	
 	@Column(name = "city")

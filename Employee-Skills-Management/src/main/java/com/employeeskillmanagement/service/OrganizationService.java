@@ -11,7 +11,7 @@ import com.employeeskillmanagement.entities.Organization;
 @Service
 public interface OrganizationService {
 	
-	public Organization createOrganization(OrganizationDTO orgDto) throws Exception;
+	public Organization createOrganization(OrganizationDTO orgDto) throws Exception;            
 	public List<Organization> getAllOrganizations();
 	public Organization getOrganizationById(long id);
 	public Organization updateOrganization(OrganizationDTO orgDto);

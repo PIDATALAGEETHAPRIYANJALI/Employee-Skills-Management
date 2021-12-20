@@ -24,36 +24,36 @@ import com.employeeskillmanagement.service.SkillsService;
 @RestController
 @RequestMapping("/api/skill")
 public class SkillsController {
-	
+
 	@Autowired
 	private SkillsService skillsService;
-	
+
 	@GetMapping("/skills")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Skills> getAllSkills(){
+	public List<Skills> getAllSkills() {
 		return this.skillsService.getAllSkills();
 	}
-	
+
 	@GetMapping(value = "/skills/{id}")
 	public ResponseEntity<Skills> getSkillById(@PathVariable Integer id) {
 		return ResponseEntity.ok().body(this.skillsService.getSkillById(id));
 	}
-	
+
 	@PostMapping(value = "/saveSkill")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Skills> create(@Valid @RequestBody SkillsDTO skillsDto) throws Exception {
-		System.out.println("hi");
+		System.out.println("Controller");
 		Skills skill = this.skillsService.createSkill(skillsDto);
-		return new ResponseEntity<>(skill, HttpStatus.CREATED);	
+		return new ResponseEntity<>(skill, HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping(value = "/updateSkill/{id}")
-	public ResponseEntity<Skills> update(@RequestBody SkillsDTO skillsDto, @PathVariable Integer id){
+	public ResponseEntity<Skills> update(@RequestBody SkillsDTO skillsDto, @PathVariable Integer id) {
 		skillsDto.setSkill_id(id);
 		System.out.println("Updated the Skills_Details");
 		return ResponseEntity.ok().body(this.skillsService.updateSkill(skillsDto));
 	}
-	
+
 	@DeleteMapping(value = "/deleteSkill/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public HttpStatus delete(@PathVariable Integer id) {
@@ -61,7 +61,5 @@ public class SkillsController {
 		this.skillsService.deleteSkillById(id);
 		return HttpStatus.OK;
 	}
-	
-	
 
 }

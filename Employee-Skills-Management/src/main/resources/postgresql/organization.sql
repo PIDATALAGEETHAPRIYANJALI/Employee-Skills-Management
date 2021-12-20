@@ -1,3 +1,7 @@
+-- Table: public.organization
+
+-- DROP TABLE public.organization;
+
 CREATE TABLE IF NOT EXISTS public.organization
 (
     id bigint NOT NULL,

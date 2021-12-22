@@ -2,6 +2,8 @@ package com.employeeskillmanagement.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.employeeskillmanagement.entities.User;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +18,9 @@ import lombok.Setter;
 public class SkillsDTO {
 
 	private Integer skill_id;
+	@NotEmpty(message = "Should provide skill_name")
 	private String skill_name;
+	@NotEmpty(message = "Should provide description")
 	private String description;
 
 	private List<UserDTO> userDto;

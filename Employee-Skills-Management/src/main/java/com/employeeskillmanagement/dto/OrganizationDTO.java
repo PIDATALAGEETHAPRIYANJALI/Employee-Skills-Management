@@ -1,15 +1,27 @@
 package com.employeeskillmanagement.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class OrganizationDTO {
 	
 	private long id;
+	@NotEmpty(message = "Should provide organizationName")
 	private String organizationName;
+	@NotEmpty(message = "Should have to provide city")
 	private String city;
+	@NotEmpty(message = "Should have to provide state")
 	private String state;
+	@NotEmpty(message = "Should have to provide country")
 	private String country;
+	@NotEmpty(message = "Zip value is must not be empty")
 	private Long zip;
+	@NotEmpty(message = "Should provide phone number")
+	@Size(min = 10, message = "Phone number should contain 10 numbers")
 	private Long phone;
+    @NotEmpty(message = "give email")
+    @Email(message = "Please enter valid email address")
 	private String email;
 	
 	private UserDTO userDto;

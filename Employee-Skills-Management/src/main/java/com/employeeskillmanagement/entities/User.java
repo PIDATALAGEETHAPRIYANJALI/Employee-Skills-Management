@@ -16,7 +16,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,6 +60,7 @@ public class User implements UserDetails, Serializable {
 	@Pattern(regexp ="^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$",message="mail id is not valid")
 	@NotEmpty
 	@Column(name="email",unique = true)
+	@Email(message = "Please enter valid email address")
 	private String email;	
 	
 
@@ -67,6 +70,7 @@ public class User implements UserDetails, Serializable {
 		inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	@OrderBy
 	@JsonIgnore
+	@NotNull(message = "please give correct role")
 	private Collection<Authority> authorities;
 
 
